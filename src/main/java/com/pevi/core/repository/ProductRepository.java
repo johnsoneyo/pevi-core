@@ -7,6 +7,7 @@ package com.pevi.core.repository;
 
 import com.pevi.core.models.entity.Product;
 import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository  extends CrudRepository<Product, Integer>{
     
-    List<Product>findAll();
+    @Query(value = "select * from product limit ?1,100",nativeQuery=true)
+    List<Product>getAllProducts(int start);
     
 }
