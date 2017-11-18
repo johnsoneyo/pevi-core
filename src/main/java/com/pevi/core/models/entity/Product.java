@@ -5,8 +5,10 @@
  */
 package com.pevi.core.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,6 +20,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,8 +42,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description")
     , @NamedQuery(name = "Product.findByImageUrl", query = "SELECT p FROM Product p WHERE p.imageUrl = :imageUrl")
     , @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")
-    , @NamedQuery(name = "Product.findByInventorySize", query = "SELECT p FROM Product p WHERE p.inventorySize = :inventorySize")})
+    , @NamedQuery(name = "Product.findByInventorySize", query = "SELECT p FROM Product p WHERE p.inventorySize = :inventorySize")
+    , @NamedQuery(name = "Product.findByTimeCreated", query = "SELECT p FROM Product p WHERE p.timeCreated = :timeCreated")})
 public class Product implements Serializable {
+
+    @Column(name = "category_id")
+    private Integer categoryId;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,12 +55,16 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 32)
     @Column(name = "name")
     private String name;
+    @Size(max = 32)
     @Column(name = "alias")
     private String alias;
+    @Size(max = 256)
     @Column(name = "description")
     private String description;
+    @Size(max = 128)
     @Column(name = "image_url")
     private String imageUrl;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -58,6 +72,11 @@ public class Product implements Serializable {
     private BigDecimal price;
     @Column(name = "inventory_size")
     private Integer inventorySize;
+    @Basic(optional = false)
+    @Column(name = "time_created")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeCreated;
+    @JsonIgnore
     @OneToMany(mappedBy = "productId")
     private List<Orders> ordersList;
 
@@ -66,6 +85,11 @@ public class Product implements Serializable {
 
     public Product(Integer id) {
         this.id = id;
+    }
+
+    public Product(Integer id, Date timeCreated) {
+        this.id = id;
+        this.timeCreated = timeCreated;
     }
 
     public Integer getId() {
@@ -124,6 +148,14 @@ public class Product implements Serializable {
         this.inventorySize = inventorySize;
     }
 
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(Date timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
     @XmlTransient
     public List<Orders> getOrdersList() {
         return ordersList;
@@ -156,6 +188,14 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "com.pevi.core.models.entity.Product[ id=" + id + " ]";
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
     
 }
