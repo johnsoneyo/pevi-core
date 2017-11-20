@@ -34,11 +34,10 @@ public class AuthController {
     @PostMapping("pvlogin")
     public ResponseEntity login(@RequestBody PvAdmin pva) {
         try {
-            PvAdmin login = auth.login(pva.getLoginId(), pva.getPassword());
-            return new ResponseEntity<PvAdmin>(login, HttpStatus.OK);
+             auth.login(pva.getLoginId(), pva.getPassword());
+            return new ResponseEntity(HttpStatus.OK);
         } catch (PeviException ex) {
-            Logger.getLogger(AuthController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
     }
 

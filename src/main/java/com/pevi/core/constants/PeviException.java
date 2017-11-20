@@ -14,7 +14,7 @@ public class PeviException extends Exception {
     private String message;
     
     public PeviException(String message) {
-        super(message);
+        this.message = message;
     }
 
     public String getMessage() {

@@ -19,12 +19,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Integer>, JpaSpecificationExecutor  {
 
-    @Query(value = "select * from product limit ?1,100", nativeQuery = true)
+    @Query(value = "select * from product order by time_created desc limit ?1,100", nativeQuery = true)
     List<Product> getAllProducts(int offset);
     @Query(value = "select * from product where id = ?1", nativeQuery = true)
     Product findById(int id);
 
-    @Query(value="select * from product where price between ?1 and ?2",nativeQuery=true)
+    @Query(value="select * from product where price between ?1 and ?2 order by time_created desc",nativeQuery=true)
     public List<Product> findByRange(int parseInt,int parseInt0);
 
 }

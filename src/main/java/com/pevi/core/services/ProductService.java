@@ -10,16 +10,15 @@ import com.pevi.core.models.dto.ProductFilter;
 import com.pevi.core.models.entity.Product;
 import com.pevi.core.repository.ProductDao;
 import com.pevi.core.repository.ProductRepository;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -31,6 +30,8 @@ public class ProductService {
     @PersistenceContext
     EntityManager em;
 
+    @Value("${image.path}")private String imgPath;
+    
     @Autowired
     private ProductRepository prep;
     @Autowired
@@ -45,6 +46,13 @@ public class ProductService {
     }
 
     public void saveProduct(Product p) {
+        prep.save(p);
+    }
+    
+     public void saveProductWithImg(Product p,MultipartFile file) throws IOException {
+        File f = new File(imgPath+file.getOriginalFilename());
+        file.transferTo(f);
+        p.setImageUrl(f.getAbsolutePath());
         prep.save(p);
     }
 

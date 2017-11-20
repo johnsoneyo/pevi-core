@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends CrudRepository<Orders, Integer> {
 
-    @Query(value = "select * from order limit ?1,100", nativeQuery = true)
+    @Query(value = "select * from orders limit ?1,100", nativeQuery = true)
     List<Orders> getOrders(int offset);
 }

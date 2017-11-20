@@ -5,6 +5,7 @@
  */
 package com.pevi.core.services;
 
+import com.pevi.core.constants.Constants;
 import com.pevi.core.models.dto.AnonymousOrder;
 import com.pevi.core.models.dto.OrderDTO;
 import com.pevi.core.models.entity.Customers;
@@ -41,15 +42,21 @@ public class OrderService {
             Orders or = new Orders();
             or.setProductId(prepo.findById(o.getProductId()));
             or.setPaid(Boolean.FALSE);
+            or.setQuantity(o.getQuantity());
             or.setCustomerId(cus != null ? cus : newCustomer(ord));
             or.setTimeCreated(new Date());
             repo.save(or);
         });
 
+        //send notification
+        sendEmail(cus);
+
     }
 
     public List<Orders> getOrders(String pageNo) {
-        return repo.getOrders(Integer.parseInt(pageNo));
+        int res = (Integer.parseInt(pageNo) - 1);
+        int offset = res != 0 ? res * (Constants.resultCount) + 1 : 0;
+        return repo.getOrders(offset);
     }
 
     private Customers newCustomer(AnonymousOrder ord) {
@@ -64,6 +71,15 @@ public class OrderService {
 
     public Orders modifyOrder(Orders ord) {
         return repo.save(ord);
+    }
+
+    public void deleteOrder(String orderId) {
+        Orders findOne = this.repo.findOne(Integer.parseInt(orderId));
+        this.repo.delete(findOne);
+    }
+
+    private void sendEmail(Customers cus) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

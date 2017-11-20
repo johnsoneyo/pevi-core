@@ -33,4 +33,9 @@ public class CategoryService {
         return (List<Category>) crepo.findAll();
     }
 
+    public void deleteCategory(String catId) {
+        Category findOne = this.crepo.findOne(Integer.parseInt(catId));
+        this.crepo.delete(findOne);
+    }
+
 }

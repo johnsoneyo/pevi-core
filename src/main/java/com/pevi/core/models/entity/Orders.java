@@ -5,6 +5,7 @@
  */
 package com.pevi.core.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -55,7 +57,12 @@ public class Orders implements Serializable {
     private Product productId;
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Customers customerId;
+    @Transient
+    private String fname;
+    @Column(name = "quantity")
+    private Integer quantity;
 
     public Orders() {
     }
@@ -133,5 +140,23 @@ public class Orders implements Serializable {
     public String toString() {
         return "com.pevi.core.models.entity.Orders[ id=" + id + " ]";
     }
+    
+    public String getFname() {
+        return this.customerId.getFname();
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+    
+    
     
 }

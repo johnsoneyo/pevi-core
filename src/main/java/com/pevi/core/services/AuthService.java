@@ -21,13 +21,11 @@ public class AuthService {
     @Autowired
     AuthRepository authRep;
 
-    public PvAdmin login(String loginId, String password) throws PeviException {
+    public void login(String loginId, String password) throws PeviException {
         PvAdmin login = authRep.login(loginId, password);
         if (login == null) {
             throw new PeviException("Pv admin doesnt exist");
-        } else {
-            return login;
-        }
+        } 
 
     }
 

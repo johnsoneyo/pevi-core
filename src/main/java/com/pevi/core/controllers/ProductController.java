@@ -5,6 +5,7 @@
  */
 package com.pevi.core.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pevi.core.models.dto.ProductFilter;
 import com.pevi.core.models.entity.Product;
 import com.pevi.core.services.ProductService;
@@ -27,7 +28,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -49,6 +52,15 @@ public class ProductController {
     @PostMapping("saveProduct")
     public ResponseEntity saveProduct(@RequestBody Product p) {
         pserve.saveProduct(p);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @PostMapping("saveProductv2")
+    public ResponseEntity saveProductWithPhoto(@RequestPart(value = "product") String product,
+            @RequestPart(value = "uploadFile") MultipartFile file) throws IOException {
+        ObjectMapper m = new ObjectMapper();
+        Product p = m.readValue(product, Product.class);
+        pserve.saveProductWithImg(p,file);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
