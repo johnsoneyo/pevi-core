@@ -7,6 +7,7 @@ package com.pevi.core.controllers;
 
 import com.pevi.core.models.dto.AnonymousOrder;
 import com.pevi.core.models.entity.Orders;
+import com.pevi.core.services.MailSender;
 import com.pevi.core.services.OrderService;
 import io.swagger.annotations.Api;
 import java.util.List;
@@ -32,10 +33,12 @@ public class OrderController {
 
     @Autowired
     private OrderService ordersvc;
+    @Autowired private MailSender send;
 
     @PostMapping("saveOrder")
     public ResponseEntity saveOrder(@RequestBody AnonymousOrder order) {
         ordersvc.saveOrder(order);
+        send.sendMail("order@peviecommerce.com", order.getEmail(), "", "", order);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

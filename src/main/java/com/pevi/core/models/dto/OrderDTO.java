@@ -5,6 +5,8 @@
  */
 package com.pevi.core.models.dto;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author johnson3yo
@@ -12,6 +14,8 @@ package com.pevi.core.models.dto;
 public class OrderDTO {
 
     private int productId;
+    private String productName;
+    private BigDecimal price;
     private int quantity;
 
     public int getProductId() {
@@ -29,5 +33,25 @@ public class OrderDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+   
+    
+    
 
 }

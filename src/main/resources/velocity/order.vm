@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>A simple, clean, and responsive HTML invoice template</title>
+    <title>Pevi Food Invoice for $ord.fName</title>
     
     <style>
     .invoice-box {
@@ -111,10 +111,8 @@
                             </td>
                             
                             <td>
-                                Invoice #: 123<br>
-                                Created: January 1, 2015<br>
-                                Due: February 1, 2015
-                            </td>
+                                Created:  $timeCreated<br>
+                           </td>
                         </tr>
                     </table>
                 </td>
@@ -125,15 +123,14 @@
                     <table>
                         <tr>
                             <td>
-                                Sparksuite, Inc.<br>
-                                12345 Sunny Road<br>
-                                Sunnyville, CA 12345
+                              4, Akinola Johnston close<br>
+                                Off Adeniran Ogunsanya<br>
+                                Surulere, Lagos.
                             </td>
                             
                             <td>
-                                Acme Corp.<br>
-                                John Doe<br>
-                                john@example.com
+                                 Evioghene Williams<br>
+                                 evioghene.w@peviecommerce.com
                             </td>
                         </tr>
                     </table>
@@ -148,15 +145,24 @@
                 <td>
                     Check #
                 </td>
+               <td>
+                   
+                </td>
+                <td>
+                   
+                </td>
             </tr>
             
             <tr class="details">
                 <td>
-                    Check
+                   Payment On Delivery
                 </td>
                 
                 <td>
-                    1000
+                   
+                </td>
+                <td>
+                  
                 </td>
             </tr>
             
@@ -168,46 +174,42 @@
                 <td>
                     Price
                 </td>
+                <td>
+                    Quantity
+                </td>
+                <td>
+                    Sub-Total
+                </td>
             </tr>
-            
+            #foreach( $ord in $orders )
             <tr class="item">
                 <td>
-                    Website design
+                   $ord.productName
                 </td>
                 
                 <td>
-                    $300.00
+                   &#8358; $ord.price
+                </td>
+                <td>
+                  $ord.quantity
+                </td>
+                <td>
+                  #set($sub = $ord.quantity*$ord.price)
+                  &#8358; $sub
                 </td>
             </tr>
-            
-            <tr class="item">
-                <td>
-                    Hosting (3 months)
-                </td>
-                
-                <td>
-                    $75.00
-                </td>
-            </tr>
-            
-            <tr class="item last">
-                <td>
-                    Domain name (1 year)
-                </td>
-                
-                <td>
-                    $10.00
-                </td>
-            </tr>
+            #end
             
             <tr class="total">
                 <td></td>
-                
+                <td></td>
                 <td>
-                   Total: $385.00
+                   Total:  &#8358; $total
                 </td>
             </tr>
         </table>
+
+       <p>To be Delivered To : $ord.address</p>
     </div>
 </body>
 </html>
