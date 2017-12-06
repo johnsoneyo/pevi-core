@@ -6,6 +6,7 @@
 package com.pevi.core.services;
 
 import com.pevi.core.constants.Constants;
+import com.pevi.core.constants.PeviException;
 import com.pevi.core.models.dto.ProductFilter;
 import com.pevi.core.models.entity.Product;
 import com.pevi.core.repository.ProductDao;
@@ -30,8 +31,9 @@ public class ProductService {
     @PersistenceContext
     EntityManager em;
 
-    @Value("${image.path}")private String imgPath;
-    
+    @Value("${image.path}")
+    private String imgPath;
+
     @Autowired
     private ProductRepository prep;
     @Autowired
@@ -48,9 +50,9 @@ public class ProductService {
     public void saveProduct(Product p) {
         prep.save(p);
     }
-    
-     public void saveProductWithImg(Product p,MultipartFile file) throws IOException {
-        File f = new File(imgPath+file.getOriginalFilename());
+
+    public void saveProductWithImg(Product p, MultipartFile file) throws IOException {
+        File f = new File(imgPath + file.getOriginalFilename());
         file.transferTo(f);
         p.setImageUrl(f.getAbsolutePath());
         prep.save(p);
@@ -72,10 +74,24 @@ public class ProductService {
         return prep.findByRange(parseInt, parseInt0);
     }
 
-   public List<Product>retriveProducts(ProductFilter pf){
-      return pdao.retrieveProducts(pf);
-   }
+    public List<Product> retriveProducts(ProductFilter pf) {
+        return pdao.retrieveProducts(pf);
+    }
 
-   
+    public boolean toggleState(int parseInt) throws PeviException {
+
+        Product findOne = prep.findOne(parseInt);
+        if (findOne == null) {
+            throw new PeviException(String.format("product not id %d found ", parseInt));
+        }
+        if (findOne.isActive()) {
+            findOne.setActive(Boolean.FALSE);
+        } else {
+            findOne.setActive(Boolean.TRUE);
+        }
+        Product save = prep.save(findOne);
+        return save.isActive();
+        
+    }
 
 }

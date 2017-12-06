@@ -6,6 +6,7 @@
 package com.pevi.core.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pevi.core.constants.PeviException;
 import com.pevi.core.models.dto.ProductFilter;
 import com.pevi.core.models.entity.Product;
 import com.pevi.core.services.ProductService;
@@ -60,7 +61,7 @@ public class ProductController {
             @RequestPart(value = "uploadFile") MultipartFile file) throws IOException {
         ObjectMapper m = new ObjectMapper();
         Product p = m.readValue(product, Product.class);
-        pserve.saveProductWithImg(p,file);
+        pserve.saveProductWithImg(p, file);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -117,6 +118,18 @@ public class ProductController {
             } catch (IOException ex) {
                 Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+
+    }
+
+    @GetMapping("toggleState/{productId}")
+    public ResponseEntity toggleState(@PathVariable("productId") String productId) {
+
+        try {
+            boolean state = this.pserve.toggleState(Integer.parseInt(productId));
+            return new ResponseEntity<Boolean>(state, HttpStatus.OK);
+        } catch (PeviException ex) {
+            return new ResponseEntity<String>(ex.getMessage(), HttpStatus.OK);
         }
 
     }

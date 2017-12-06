@@ -79,6 +79,8 @@ public class Product implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "productId")
     private List<Orders> ordersList;
+    @Column(name ="active")
+    private boolean active;
 
     public Product() {
     }
@@ -197,5 +199,15 @@ public class Product implements Serializable {
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
+    
     
 }
