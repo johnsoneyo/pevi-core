@@ -50,6 +50,10 @@ public class OrderDTO {
         this.price = price;
     }
 
+    public void getEmail() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
    
     
     

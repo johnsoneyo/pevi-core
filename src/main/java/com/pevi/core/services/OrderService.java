@@ -9,8 +9,10 @@ import com.pevi.core.constants.Constants;
 import com.pevi.core.models.dto.AnonymousOrder;
 import com.pevi.core.models.dto.OrderDTO;
 import com.pevi.core.models.entity.Customers;
+import com.pevi.core.models.entity.Invoice;
 import com.pevi.core.models.entity.Orders;
 import com.pevi.core.repository.CustomerRepository;
+import com.pevi.core.repository.InvoiceRepository;
 import com.pevi.core.repository.OrderRepository;
 import com.pevi.core.repository.ProductRepository;
 import java.util.Arrays;
@@ -32,24 +34,29 @@ public class OrderService {
     private CustomerRepository crepo;
     @Autowired
     private ProductRepository prepo;
+    @Autowired
+    private InvoiceRepository irepo;
 
-    public void saveOrder(AnonymousOrder ord) {
+    public Invoice saveOrder(AnonymousOrder ord) {
 
-        Customers cus = crepo.findByEmail(ord.getEmail());
+        List<Customers> cus = crepo.findByEmail(ord.getEmail());
         List<OrderDTO> asList = Arrays.asList(ord.getOrders());
+        Invoice inv = new Invoice();
+        inv.setPaid(Boolean.FALSE);
+        inv.setAlias(ord.getEmail());
+        inv = irepo.save(inv);
 
-        asList.forEach(o -> {
+        for (OrderDTO o : asList) {
             Orders or = new Orders();
             or.setProductId(prepo.findById(o.getProductId()));
-            or.setPaid(Boolean.FALSE);
             or.setQuantity(o.getQuantity());
-            or.setCustomerId(cus != null ? cus : newCustomer(ord));
+            or.setCustomerId(cus != null ? cus.get(0) : newCustomer(ord));
             or.setTimeCreated(new Date());
+            or.setInvoiceId(inv);
             repo.save(or);
-        });
+        }
 
-        //send notification
-        sendEmail(cus);
+        return inv;
 
     }
 

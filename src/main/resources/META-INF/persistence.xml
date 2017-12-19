@@ -8,6 +8,7 @@
     <class>com.pevi.core.models.entity.Customers</class>
     <class>com.pevi.core.models.entity.Category</class>
     <class>com.pevi.core.models.entity.PvAdmin</class>
+    <class>com.pevi.core.models.entity.Invoice</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pevidb?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

@@ -32,12 +32,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "orders")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o")
-    , @NamedQuery(name = "Orders.findById", query = "SELECT o FROM Orders o WHERE o.id = :id")
-    , @NamedQuery(name = "Orders.findByPaid", query = "SELECT o FROM Orders o WHERE o.paid = :paid")
-    , @NamedQuery(name = "Orders.findByTimeCreated", query = "SELECT o FROM Orders o WHERE o.timeCreated = :timeCreated")})
 public class Orders implements Serializable {
+
+    @JoinColumn(name = "invoice_id", referencedColumnName = "id")
+    @ManyToOne
+    @JsonIgnore
+    private Invoice invoiceId;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,9 +45,6 @@ public class Orders implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "paid")
-    private Boolean paid;
-    @Basic(optional = false)
     @NotNull
     @Column(name = "time_created")
     @Temporal(TemporalType.TIMESTAMP)
@@ -63,6 +60,8 @@ public class Orders implements Serializable {
     private String fname;
     @Column(name = "quantity")
     private Integer quantity;
+    @Transient
+    private Integer invId;
 
     public Orders() {
     }
@@ -84,13 +83,6 @@ public class Orders implements Serializable {
         this.id = id;
     }
 
-    public Boolean getPaid() {
-        return paid;
-    }
-
-    public void setPaid(Boolean paid) {
-        this.paid = paid;
-    }
 
     public Date getTimeCreated() {
         return timeCreated;
@@ -156,6 +148,23 @@ public class Orders implements Serializable {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public Invoice getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(Invoice invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public Integer getInvId() {
+        return invoiceId.getId();
+    }
+
+    public void setInvId(Integer invId) {
+        this.invId = invId;
+    }
+    
     
     
     

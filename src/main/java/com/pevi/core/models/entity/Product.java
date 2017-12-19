@@ -46,6 +46,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Product.findByTimeCreated", query = "SELECT p FROM Product p WHERE p.timeCreated = :timeCreated")})
 public class Product implements Serializable {
 
+    @Column(name = "active")
+    private Boolean active;
+
     @Column(name = "category_id")
     private Integer categoryId;
 
@@ -79,8 +82,6 @@ public class Product implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "productId")
     private List<Orders> ordersList;
-    @Column(name ="active")
-    private boolean active;
 
     public Product() {
     }
@@ -200,11 +201,11 @@ public class Product implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
     

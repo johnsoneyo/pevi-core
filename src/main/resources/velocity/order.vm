@@ -107,11 +107,13 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="https://www.sparksuite.com/images/logo.png" style="width:100%; max-width:300px;">
+                                <img src="https://lh5.googleusercontent.com/ee0qmCU7LDg7xwIVK9NUTZVqiYOWppKKn0BUJ70NceZoWNyQtOXVBxzUojLe7_-XWducvr4AVK4Zyr2Sxylh=w1366-h631" style="width:100%; max-width:300px;">
                             </td>
-                            
                             <td>
-                                Created:  $timeCreated<br>
+                               Invoice : $inv
+                            </td>
+                            <td>
+                               $timeCreated<br>
                            </td>
                         </tr>
                     </table>
@@ -208,8 +210,9 @@
                 </td>
             </tr>
         </table>
-
+     
        <p>To be Delivered To : $ord.address</p>
+       <p>upon time scheduled by the customer</p>
     </div>
 </body>
 </html>

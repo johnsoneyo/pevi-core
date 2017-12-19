@@ -40,11 +40,9 @@ public class ProductService {
     private ProductDao pdao;
 
     public List<Product> getProducts(String pageNo) {
-
         int res = (Integer.parseInt(pageNo) - 1);
         int offset = res != 0 ? res * (Constants.resultCount) + 1 : 0;
         return prep.getAllProducts(offset);
-
     }
 
     public void saveProduct(Product p) {
@@ -91,7 +89,7 @@ public class ProductService {
         }
         Product save = prep.save(findOne);
         return save.isActive();
-        
+
     }
 
 }

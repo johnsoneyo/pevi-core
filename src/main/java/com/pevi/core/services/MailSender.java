@@ -36,7 +36,7 @@ public class MailSender {
     @Autowired
     private VelocityEngine engine;
 
-    public void sendMail(String from, String to, String subject, String body,AnonymousOrder order) {
+    public void sendMail(String from, String to, String subject, int invoiceId,AnonymousOrder order) {
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             @SuppressWarnings({"rawtypes", "unchecked"})
             public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -49,7 +49,8 @@ public class MailSender {
                 Map model = new HashMap();
                 model.put("orders", order.getOrders());
                 model.put("ord", order);
-                SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy at ha");
+                model.put("inv", invoiceId);
+                SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy h:mm a");
                 String format = sdf.format(new Date());
                 model.put("timeCreated", format);
                 List<OrderDTO> asList = Arrays.asList(order.getOrders());
